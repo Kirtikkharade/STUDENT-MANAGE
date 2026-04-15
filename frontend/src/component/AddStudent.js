@@ -1,63 +1,48 @@
 import React, { useState } from "react";
-import { addEmployee } from "../services/api";
+import { addStudent } from "../service/api";
 import { useNavigate } from "react-router-dom";
-import "../App.css";
 
-function AddEmployee() {
-    const [stud, setStud] = useState({
-        name: "",
-        age: "",
-        gender:"",
-        city: "",
-        marks:"",
-        email:"",
-        course:"",
-        admission_date: ""
-    });
-
-
+function AddStudent() {
     const navigate = useNavigate();
 
+    const [student, setStudent] = useState({
+        name: "",
+        age: "",
+        gender: "",
+        city: "",
+        marks: "",
+        email: "",
+        course: "",
+        admissionDate: ""
+    });
+
     const handleChange = (e) => {
-        setStud({ ...stud, [e.target.name]: e.target.value });
+        setStudent({ ...student, [e.target.name]: e.target.value });
     };
 
-    const validate = () => {
-        if (!stud.name ||  !stud.age || !stud.gender || !stud.city || !stud.marks || !stud.email || !stud.course || !stud.admission_date) {
-            alert("All fields are required!");
-            return false;
-        }
-        if (stud.marks <= 0) {
-            alert("Marks must be positive");
-            return false;
-        }
-        if (stud.age <= 0) {
-            alert("Age must be valid");
-            return false;
-        }
-        return true;
-    };
-
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        if (!validate()) return;
-
-        await addEmployee(stud);
-        navigate("/");
+        addStudent(student).then(() => {
+            alert("Student Added!");
+            navigate("/");
+        });
     };
 
     return (
-        <div className="form-container">
-            <h2>Add Employee</h2>
+        <div>
+            <h2>Add Student</h2>
 
             <form onSubmit={handleSubmit}>
-                <input name="name" placeholder="Name" onChange={handleChange} />
-                <input name="age" type="number" placeholder="Age" onChange={handleChange} />
-                <input name="gender" type="" {handleChange}/>
-                <input name="city" placeholder="City" onChange={handleChange} />
-                <input name="admision_date" type="date" onChange={handleChange} />
+                <input name="name" placeholder="Name" onChange={handleChange} /><br/>
+                <input name="age" placeholder="Age" onChange={handleChange} /><br/>
+                <input name="gender" placeholder="Gender" onChange={handleChange} /><br/>
+                <input name="city" placeholder="City" onChange={handleChange} /><br/>
+                <input name="marks" placeholder="Marks" onChange={handleChange} /><br/>
+                <input name="email" placeholder="Email" onChange={handleChange} /><br/>
+                <input name="course" placeholder="Course" onChange={handleChange} /><br/>
+                <input type="date" name="admissionDate" onChange={handleChange} /><br/>
 
-                <button type="submit" className="btn-add">Save</button>
+                <button type="submit">Save</button>
             </form>
         </div>
     );

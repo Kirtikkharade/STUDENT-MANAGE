@@ -1,48 +1,58 @@
 import React, { useEffect, useState } from "react";
-import { getEmployeeById, updateEmployee } from "../services/api";
+import { getStudentById, updateStudent } from "../service/api";
 import { useNavigate, useParams } from "react-router-dom";
-import "../App.css";
 
-function EditEmployee() {
-    const [emp, setEmp] = useState({});
+function EditStudent() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        loadEmployee();
-    }, []);
+    const [student, setStudent] = useState({
+        name: "",
+        age: "",
+        gender: "",
+        city: "",
+        marks: "",
+        email: "",
+        course: "",
+        admissionDate: ""
+    });
 
-    const loadEmployee = async () => {
-        const res = await getEmployeeById(id);
-        setEmp(res.data);
-    };
+    useEffect(() => {
+        getStudentById(id).then((res) => {
+            setStudent(res.data);
+        });
+    }, [id]);
 
     const handleChange = (e) => {
-        setEmp({ ...emp, [e.target.name]: e.target.value });
+        setStudent({ ...student, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        await updateEmployee(id, emp);
-        navigate("/");
+        updateStudent(id, student).then(() => {
+            alert("Updated Successfully!");
+            navigate("/");
+        });
     };
 
     return (
-        <div className="form-container">
-            <h2>Edit Employee</h2>
+        <div>
+            <h2>Edit Student</h2>
 
             <form onSubmit={handleSubmit}>
-                <input name="name" value={emp.name || ""} onChange={handleChange} />
-                <input name="department" value={emp.department || ""} onChange={handleChange} />
-                <input name="salary" value={emp.salary || ""} onChange={handleChange} />
-                <input name="age" value={emp.age || ""} onChange={handleChange} />
-                <input name="city" value={emp.city || ""} onChange={handleChange} />
-                <input name="joiningDate" type="date" value={emp.joiningDate || ""} onChange={handleChange} />
+                <input name="name" value={student.name} onChange={handleChange} /><br/>
+                <input name="age" value={student.age} onChange={handleChange} /><br/>
+                <input name="gender" value={student.gender} onChange={handleChange} /><br/>
+                <input name="city" value={student.city} onChange={handleChange} /><br/>
+                <input name="marks" value={student.marks} onChange={handleChange} /><br/>
+                <input name="email" value={student.email} onChange={handleChange} /><br/>
+                <input name="course" value={student.course} onChange={handleChange} /><br/>
+                <input type="date" name="admissionDate" value={student.admissionDate} onChange={handleChange} /><br/>
 
-                <button type="submit" className="btn-edit">Update</button>
+                <button type="submit">Update</button>
             </form>
         </div>
     );
 }
 
-export default EditEmployee;
+export default EditStudent;

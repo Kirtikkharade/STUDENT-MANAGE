@@ -1,20 +1,19 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import EmployeeList from "./components/EmployeeList";
-import AddEmployee from "./components/AddEmployee";
-import EditEmployee from "./components/EditEmployee";
-import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import StudentList from "./component/StudentList";
+import AddStudent from "./component/AddStudent";
+import EditStudent from "./component/EditStudent";
 
 function App() {
-  return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<EmployeeList />} />
-          <Route path="/add" element={<AddEmployee />} />
-          <Route path="/edit/:id" element={<EditEmployee />} />
-        </Routes>
-      </BrowserRouter>
-  );
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<StudentList />} />
+                <Route path="/add" element={<AddStudent />} />
+                <Route path="/edit/:id" element={<EditStudent />} />
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;

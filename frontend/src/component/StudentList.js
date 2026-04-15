@@ -1,57 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { getEmployees, deleteEmployee } from "../services/api";
-import { useNavigate } from "react-router-dom";
-import "../App.css";
+import { getStudents, deleteStudent } from "../service/api";
+import { Link } from "react-router-dom";
 
-function EmployeeList() {
-    const [employees, setEmployees] = useState([]);
-    const navigate = useNavigate();
+function StudentList() {
+    const [students, setStudents] = useState([]);
 
     useEffect(() => {
-        loadEmployees();
+        loadStudents();
     }, []);
 
-    const loadEmployees = async () => {
-        const res = await getEmployees();
-        setEmployees(res.data);
+    const loadStudents = () => {
+        getStudents().then((res) => {
+            setStudents(res.data);
+        });
     };
 
-    const handleDelete = async (id) => {
-        if (window.confirm("Delete this employee?")) {
-            await deleteEmployee(id);
-            loadEmployees();
-        }
+    const handleDelete = (id) => {
+        deleteStudent(id).then(() => {
+            loadStudents();
+        });
     };
 
     return (
-        <div className="container">
-            <h2>Employee List</h2>
+        <div>
+            <h2>Student List</h2>
 
-            <button onClick={() => navigate("/add")} className="btn-add">
-                Add Employee
-            </button>
+            <Link to="/add">Add Student</Link>
 
-            <table>
+            <table border="1">
                 <thead>
                 <tr>
-                    <th>ID</th><th>Name</th><th>Dept</th>
-                    <th>Salary</th><th>Age</th><th>City</th><th>Date</th><th>Action</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                {employees.map((emp) => (
-                    <tr key={emp.empId}>
-                        <td>{emp.empId}</td>
-                        <td>{emp.name}</td>
-                        <td>{emp.department}</td>
-                        <td>{emp.salary}</td>
-                        <td>{emp.age}</td>
-                        <td>{emp.city}</td>
-                        <td>{emp.joiningDate}</td>
+                {students.map((s) => (
+                    <tr key={s.studentId}>
+                        <td>{s.studentId}</td>
+                        <td>{s.name}</td>
+                        <td>{s.email}</td>
                         <td>
-                            <button onClick={() => navigate(`/edit/${emp.empId}`)} className="btn-edit">Edit</button>
-                            <button onClick={() => handleDelete(emp.empId)} className="btn-delete">Delete</button>
+                            <Link to={`/edit/${s.studentId}`}>Edit</Link>
+                            <button onClick={() => handleDelete(s.studentId)}>Delete</button>
                         </td>
                     </tr>
                 ))}
@@ -61,4 +55,4 @@ function EmployeeList() {
     );
 }
 
-export default EmployeeList;
+export default StudentList;

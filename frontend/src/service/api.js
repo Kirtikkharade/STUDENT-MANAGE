@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const API = "http://localhost:8080/api/employees";
+const BASE_URL = "http://localhost:8080/students";
 
-export const getEmployees = () => axios.get(API);
-export const addEmployee = (emp) => axios.post(API, emp);
-export const getEmployeeById = (id) => axios.get(`${API}/${id}`);
-export const updateEmployee = (id, emp) => axios.put(`${API}/${id}`, emp);
-export const deleteEmployee = (id) => axios.delete(`${API}/${id}`);
+export const getStudents = () => axios.get(BASE_URL);
+export const addStudent = (student) => axios.post(BASE_URL, student);
+export const getStudentById = (id) => axios.get(`${BASE_URL}/${id}`);
+export const updateStudent = (id, student) => axios.put(`${BASE_URL}/${id}`, student);
+export const deleteStudent = (id) => axios.delete(`${BASE_URL}/${id}`);
